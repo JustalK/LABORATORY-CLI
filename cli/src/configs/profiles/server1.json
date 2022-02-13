@@ -2,6 +2,6 @@
   "command": "server1",
   "active": true,
   "postInstall": [
-    "npm install --prefix \"$SMOOD_DEV_PATH/workspaces/smood-front/admin-v3\""
+    "npm install --prefix \"$DEV_PATH/workspaces/server1\""
   ]
 }

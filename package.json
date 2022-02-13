@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "express": "^4.17.2"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "start": "docker-compose up -d --build",
