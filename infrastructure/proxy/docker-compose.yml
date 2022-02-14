@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: jwilder/nginx-proxy
+    container_name: labo-nginx
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      local-network:
+        ipv4_address: 172.20.0.01
+networks:
+  local-network:
+    external: true
+    name: local-network

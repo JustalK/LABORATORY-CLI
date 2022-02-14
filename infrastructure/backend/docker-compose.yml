@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  server1:
+    build: ./server1
+    container_name: labo-server1
+    env_file: ./server1/development.env
+    volumes:
+      - ./server1:/usr/src/app
+    environment:
+      - VIRTUAL_HOST=api.server1.net
+      - VIRTUAL_PORT=3000
+    ports:
+      - "3000:3000"
+    networks:
+      local-network:
+        ipv4_address: 172.20.0.02
+networks:
+  local-network:
+    external: true
+    name: local-network
