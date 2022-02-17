@@ -1,4 +1,5 @@
 {
+  "url": "https://github.com/JustalK/LABORATORY-CYPRESS.git",
   "command": "server1",
   "active": true,
   "docker": {
