@@ -2,11 +2,11 @@ version: "3.8"
 
 services:
   server1:
-    build: ./server1
+    build: $DEV_PATH/workspaces/server1
     container_name: labo-server1
     env_file: ./server1/development.env
     volumes:
-      - ./server1:/usr/src/app
+      - $DEV_PATH/workspaces/server1:/usr/src/app
     environment:
       - VIRTUAL_HOST=api.server1.net
       - VIRTUAL_PORT=3000
@@ -14,7 +14,7 @@ services:
       - "3000:3000"
     networks:
       local-network:
-        ipv4_address: 172.20.0.02
+        ipv4_address: 172.10.0.2
 networks:
   local-network:
     external: true

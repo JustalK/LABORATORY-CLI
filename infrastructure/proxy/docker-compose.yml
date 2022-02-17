@@ -12,7 +12,7 @@ services:
       - "443:443"
     networks:
       local-network:
-        ipv4_address: 172.20.0.01
+        ipv4_address: 172.10.0.1
 networks:
   local-network:
     external: true

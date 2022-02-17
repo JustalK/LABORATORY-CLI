@@ -19,7 +19,7 @@ export default class Run extends Command {
 
   async run(): Promise<void> {
     const profiles = ['server1']
-    this.log(`[run] 🌀  Lifting following profiles: ${profiles.join(', ')}`)
+    this.log(`[run] 🌀 Lifting following profiles: ${profiles.join(', ')}`)
 
     const userProfile = userProfiles[profiles[0]]
 
@@ -28,23 +28,14 @@ export default class Run extends Command {
       backend: new Set<string>(),
     }
 
-    userProfile.docker.proxy?.forEach((container: string) => executionList.proxy.add(container))
-    userProfile.docker.backend?.forEach((container: string) => executionList.backend.add(container))
+    for (const infrastructure of Object.keys(executionList)) {
+      for (const container of userProfile.docker[infrastructure]) {
+        executionList[infrastructure].add(container)
+      }
+    }
+
     this.log(executionList)
 
-    try {
-      const rsl = await execa('docker', ['network', 'ls'])
-      if (rsl.stdout.includes('local-network')) {
-        this.log('[setup:docker-init-network] ✅  Docker network already exist')
-      } else {
-        await execa('docker', ['network', 'create', '--subnet=172.10.0.0/24', 'local-network'])
-        await execa('docker', ['network', 'inspect', 'local-network'])
-        this.log('[setup:docker-init-network] ✅  Docker network created')
-      }
-    } catch (error: unknown) {
-      this.log('[setup:docker-init-network] ❌ Docker has not been created')
-      this.error((error as any))
-    }
     /**
     for (const key of Object.keys(executionList)) {
       const filePath = `${process.env.DEV_PATH}/infrastructure/${key}/docker-compose.yml`
