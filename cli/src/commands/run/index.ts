@@ -3,6 +3,7 @@ require('dotenv').config()
 const {exec} = require('child_process')
 import execa = require('execa')
 import {Command} from '@oclif/core'
+const { execSync } = require("child_process");
 import {ProfileManager} from '../../configs/profiles'
 
 const userProfiles = ProfileManager.getInstance().getProfiles()
@@ -32,11 +33,19 @@ export default class Run extends Command {
     this.log(executionList)
 
     try {
-      await execa('docker', ['network', 'create', '--subnet=172.10.0.0/24', 'local-network'])
-    } catch {
-      this.log('[setup:docker-init-network] ✅  Docker network already exist')
+      const rsl = await execa('docker', ['network', 'ls'])
+      if (rsl.stdout.includes('local-network')) {
+        this.log('[setup:docker-init-network] ✅  Docker network already exist')
+      } else {
+        await execa('docker', ['network', 'create', '--subnet=172.10.0.0/24', 'local-network'])
+        await execa('docker', ['network', 'inspect', 'local-network'])
+        this.log('[setup:docker-init-network] ✅  Docker network created')
+      }
+    } catch (error: unknown) {
+      this.log('[setup:docker-init-network] ❌ Docker has not been created')
+      this.error((error as any))
     }
-
+    /**
     for (const key of Object.keys(executionList)) {
       const filePath = `${process.env.DEV_PATH}/infrastructure/${key}/docker-compose.yml`
       this.log(filePath)
@@ -56,5 +65,6 @@ export default class Run extends Command {
         }
       })
     }
+    **/
   }
 }
