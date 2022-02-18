@@ -1,7 +1,6 @@
 import {Command, Flags} from '@oclif/core'
 import execa = require('execa')
 import {ProfileManager} from '../../configs/profiles'
-
 const userProfiles = ProfileManager.getInstance().getProfiles()
 
 export default class GitClone extends Command {

@@ -1,9 +1,8 @@
 /* eslint-disable no-await-in-loop */
-import {Command} from '@oclif/core'
-import {CLIError} from '@oclif/errors'
+import {Command, Flags} from '@oclif/core'
 import execa = require('execa')
-import commandExists from 'command-exists'
 import {ProfileManager} from '../../configs/profiles'
+const userProfiles = ProfileManager.getInstance().getProfiles()
 
 export default class InstallWorkspaces extends Command {
   static description = 'Install the project.';
@@ -13,20 +12,21 @@ export default class InstallWorkspaces extends Command {
 `,
   ]
 
-  static flags = {}
+  static flags = {
+    profiles: Flags.string({
+      options: Object.keys(userProfiles),
+      multiple: true,
+      char: 'p',
+    }),
+  }
 
   async run(): Promise<void> {
-    const userProfiles = ProfileManager.getInstance().getProfiles()
-    const npmExist = await commandExists('npm')
-    if (!npmExist) {
-      throw new CLIError('[setup:install-workspaces] ❌ Npm is not installed')
-    }
-
     try {
-      const profiles = ['server1']
+      const {flags} = await this.parse(InstallWorkspaces)
+      const profiles = flags?.profiles || Object.keys(userProfiles)
       this.log('[setup:install-workspaces] Processing install instruction for following workspaces : ' + profiles.join(','))
-      for (const key of profiles) {
-        const postInstallCommands = userProfiles[key]?.postInstall
+      for (const profile of profiles) {
+        const postInstallCommands = userProfiles[profile]?.postInstall
         if (postInstallCommands) {
           for (const postInstallCommand of postInstallCommands) {
             await execa(postInstallCommand,  {shell: true, stdio: 'inherit'})

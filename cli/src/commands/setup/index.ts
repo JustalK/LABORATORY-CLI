@@ -1,8 +1,8 @@
-require('dotenv').config()
+import 'dotenv/config'
 import {Command, Flags} from '@oclif/core'
-// import CheckRequirements from './check-requirements'
-// import InitNetwork from './init-network'
-// import InstallWorkspaces from './install-workspaces'
+import InstallWorkspaces from './install-workspaces'
+import CheckRequirements from './check-requirements'
+import InitNetwork from './init-network'
 import GitClone from './git-clone'
 import {ProfileManager} from '../../configs/profiles'
 const userProfiles = ProfileManager.getInstance().getProfiles()
@@ -35,12 +35,13 @@ export default class Setup extends Command {
     try {
       const {flags} = await this.parse(Setup)
       const profiles = ['--profiles', ...flags?.profiles || Object.keys(userProfiles)]
-      await GitClone.run(profiles)
-      /**
+
       await CheckRequirements.run()
       await InitNetwork.run()
-      await InstallWorkspaces.run()
-      **/
+
+      await GitClone.run(profiles)
+      await InstallWorkspaces.run(profiles)
+
       this.log('[setup] ✅ Successfully install development environment.')
     } catch (error: unknown) {
       this.error(error as string)
