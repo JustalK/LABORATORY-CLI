@@ -15,6 +15,20 @@ services:
     networks:
       local-network:
         ipv4_address: 172.10.0.2
+  server2:
+    build: $DEV_PATH/workspaces/server2
+    container_name: labo-server2
+    env_file: ./server1/development.env
+    volumes:
+      - $DEV_PATH/workspaces/server2:/usr/src/app
+    environment:
+      - VIRTUAL_HOST=api.server2.net
+      - VIRTUAL_PORT=3001
+    ports:
+      - "3001:3000"
+    networks:
+      local-network:
+        ipv4_address: 172.10.0.3
 networks:
   local-network:
     external: true

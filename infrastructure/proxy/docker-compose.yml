@@ -4,6 +4,7 @@ services:
   nginx:
     image: jwilder/nginx-proxy
     container_name: labo-nginx
+    restart: always
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx/conf.d:/etc/nginx/conf.d
@@ -12,7 +13,7 @@ services:
       - "443:443"
     networks:
       local-network:
-        ipv4_address: 172.10.0.1
+        ipv4_address: 172.10.0.80
 networks:
   local-network:
     external: true

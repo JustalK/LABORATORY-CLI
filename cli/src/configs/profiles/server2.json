@@ -1,10 +1,10 @@
 {
-  "url": "https://github.com/JustalK/LABORATORY-CYPRESS.git",
+  "url": "https://github.com/JustalK/LABORATORY-NEXTJS-MODES.git",
   "command": "server2",
   "active": true,
   "docker": {
     "backend": [
-      "server1"
+      "server2"
     ],
     "proxy": [
       "nginx"
