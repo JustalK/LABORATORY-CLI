@@ -1,0 +1,16 @@
+{
+  "url": "https://github.com/JustalK/LABORATORY-CYPRESS.git",
+  "command": "server2",
+  "active": true,
+  "docker": {
+    "backend": [
+      "server1"
+    ],
+    "proxy": [
+      "nginx"
+    ]
+  },
+  "postInstall": [
+    "npm install --prefix \"$DEV_PATH/workspaces/server2\""
+  ]
+}

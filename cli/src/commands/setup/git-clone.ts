@@ -14,6 +14,11 @@ export default class GitClone extends Command {
 
   static flags = {
     help: Flags.help({char: 'h'}),
+    profiles: Flags.string({
+      options: [...userProfiles],
+      multiple: true,
+      char: 'p',
+    }),
   }
 
   async run(): Promise<void> {

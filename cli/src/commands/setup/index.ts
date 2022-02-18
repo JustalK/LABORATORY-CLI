@@ -1,9 +1,11 @@
 require('dotenv').config()
-import {Command} from '@oclif/core'
+import {Command, Flags} from '@oclif/core'
 // import CheckRequirements from './check-requirements'
 // import InitNetwork from './init-network'
 // import InstallWorkspaces from './install-workspaces'
-import GitClone from './git-clone'
+// import GitClone from './git-clone'
+import {ProfileManager} from '../../configs/profiles'
+const userProfiles = ProfileManager.getInstance().getProfiles()
 
 export default class Setup extends Command {
   static description = 'Install development environment'
@@ -12,14 +14,29 @@ export default class Setup extends Command {
     '$ kj setup',
   ]
 
-  static flags = {}
+  static flags = {
+    profiles: Flags.string({
+      options: Object.keys(userProfiles),
+      multiple: true,
+      char: 'p',
+    }),
+  }
 
-  static args = []
+  async catch(error: Error): Promise<void> {
+    if ((error.message as string).includes('Expected')) {
+      this.log('[setup] ❌ ' + error.message)
+      return
+    }
+
+    throw error
+  }
 
   async run(): Promise<void> {
     try {
-      await GitClone.run()
+      const {flags} = await this.parse(Setup)
+      console.log(flags)
       /**
+      await GitClone.run()
       await CheckRequirements.run()
       await InitNetwork.run()
       await InstallWorkspaces.run()
