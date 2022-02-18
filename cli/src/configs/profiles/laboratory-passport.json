@@ -1,0 +1,16 @@
+{
+  "url": "https://github.com/JustalK/laboratory-passport.git",
+  "command": "laboratory-passport",
+  "active": true,
+  "docker": {
+    "backend": [
+      "laboratory-passport"
+    ],
+    "proxy": [
+      "nginx"
+    ]
+  },
+  "postInstall": [
+    "npm install --prefix \"$DEV_PATH/workspaces/laboratory-passport\""
+  ]
+}
