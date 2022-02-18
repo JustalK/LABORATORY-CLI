@@ -1,5 +1,4 @@
 cli/node_modules
-cli/bin
 cli/dist
-workspaces/server1/node_modules
+workspaces/
 node_modules
