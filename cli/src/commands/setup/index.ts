@@ -3,7 +3,7 @@ import {Command, Flags} from '@oclif/core'
 // import CheckRequirements from './check-requirements'
 // import InitNetwork from './init-network'
 // import InstallWorkspaces from './install-workspaces'
-// import GitClone from './git-clone'
+import GitClone from './git-clone'
 import {ProfileManager} from '../../configs/profiles'
 const userProfiles = ProfileManager.getInstance().getProfiles()
 
@@ -34,9 +34,9 @@ export default class Setup extends Command {
   async run(): Promise<void> {
     try {
       const {flags} = await this.parse(Setup)
-      console.log(flags)
+      const profiles = ['--profiles', ...flags?.profiles || Object.keys(userProfiles)]
+      await GitClone.run(profiles)
       /**
-      await GitClone.run()
       await CheckRequirements.run()
       await InitNetwork.run()
       await InstallWorkspaces.run()
